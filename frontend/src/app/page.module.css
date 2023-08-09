@@ -8,6 +8,7 @@
   text-align: center;
   border: 1px solid rgb(219, 219, 219);
   border-radius: 1px;
+  padding: 0 40px 40px;
 }
 
 .signupTitle {
@@ -23,25 +24,10 @@
   font-size: 17px;
   font-weight: 600;
   line-height: 20px;
-  margin: 10px 40px 0;
+  margin: 10px 0 0;
 }
 
-.signupFacebook {
-  font-size: 14px;
-  font-weight: 600;
-  background-color: rgb(0, 149, 246);
-  color:rgb(255, 255, 255);
-  border-radius: 8px;
-  width: 268px;
-  height: 34px;
-  margin-top: 20px;
-}
-
-.signupFacebook:hover {
-  background-color: rgb(24, 119, 242);
-}
-
-.sugnupFacebookLogo {
+.signupFacebookLogo {
   background-image: url(../../public/facebook_logo.png);
   width: 20px;
   height: 20px;
@@ -54,7 +40,7 @@
 .signupOr {
   font-size: 14px;
   font-weight: 600;
-  margin: 12px 40px 0;
+  margin: 12px 0 0;
   align-items: center;
   display: flex;
 }
@@ -76,7 +62,6 @@
 }
 
 .signupForm {
-  padding: 0 40px;
   font-size: 12px;
 }
 
@@ -130,26 +115,6 @@
 
 .signupForm div:first-child {
   margin-top: 16px;
-}
-
-.signupSubmit {
-  font-size: 14px;
-  font-weight: 600;
-  background-color: rgb(0, 149, 246);
-  color:rgb(255, 255, 255);
-  border-radius: 8px;
-  width: 268px;
-  height: 34px;
-  margin: 20px 0 40px;
-}
-
-.signupSubmit:hover {
-  background-color: rgb(24, 119, 242);
-}
-
-.signupSubmit:disabled {
-  background: rgb(0, 149, 246);
-  opacity: 0.7;
 }
 
 .signupNotes {

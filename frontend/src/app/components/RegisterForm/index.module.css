@@ -1,0 +1,15 @@
+.form {
+  font-size: 12px;
+}
+
+.form div:first-child {
+  margin-top: 16px;
+}
+
+.formNotes {
+  margin-top: 12px;
+}
+
+.signupTermsOfUse {
+  margin-top: 12px;
+}
