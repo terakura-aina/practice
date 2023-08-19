@@ -9,11 +9,29 @@ import { useState } from "react"
 
 type Inputs = {}
 
+type NewMessage = {
+  type?: string
+  message?: string
+}
+
 export function RegisterForm() {
-  const methods = useForm({ mode: "onBlur", resolver: zodResolver(schema) })
+  const methods = useForm({ mode: "onChange", resolver: zodResolver(schema) })
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log({ data })
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
   const [isInvalidValue, setIsInvalidValue] = useState<boolean>(true)
+  const [errorMessage, setErrorMessage] = useState<NewMessage[]>([])
+
+  const handleErrorMessage = (newMessage: NewMessage) => {
+    // TODO: 一つの項目に対してエラーメッセージは1つだけ出るように修正する
+    if (newMessage.message) {
+      setErrorMessage((prevState) => [...prevState, newMessage])
+      console.log({ errorMessage })
+    }
+  }
+
+  const handleClick = () => {
+    // TODO: 登録処理を書く
+  }
 
   return (
     <FormProvider {...methods}>
@@ -21,9 +39,10 @@ export function RegisterForm() {
         <Form
           label="携帯電話番号またはメールアドレス"
           type="text"
-          value="phoneOrEmail"
+          value="email"
           setIsEmptyValue={setIsEmptyValue}
           setIsInvalidValue={setIsInvalidValue}
+          handleErrorMessage={handleErrorMessage}
         />
         <Form
           label="フルネーム"
@@ -31,6 +50,7 @@ export function RegisterForm() {
           value="fullName"
           setIsEmptyValue={setIsEmptyValue}
           setIsInvalidValue={setIsInvalidValue}
+          handleErrorMessage={handleErrorMessage}
         />
         <Form
           label="ユーザーネーム"
@@ -38,6 +58,7 @@ export function RegisterForm() {
           value="userName"
           setIsEmptyValue={setIsEmptyValue}
           setIsInvalidValue={setIsInvalidValue}
+          handleErrorMessage={handleErrorMessage}
         />
         <Form
           label="パスワード"
@@ -45,6 +66,7 @@ export function RegisterForm() {
           value="password"
           setIsEmptyValue={setIsEmptyValue}
           setIsInvalidValue={setIsInvalidValue}
+          handleErrorMessage={handleErrorMessage}
         />
         <div className={styles.formNotes}>
           <span>
@@ -73,7 +95,15 @@ export function RegisterForm() {
           label="登録する"
           type="submit"
           disabled={isEmptyValue || isInvalidValue}
+          onClick={() => handleClick()}
         />
+        {errorMessage && (
+          <ul className={styles.errorMessages}>
+            {errorMessage.map((message) => (
+              <li className={styles.errorMessage}>{message.message}</li>
+            ))}
+          </ul>
+        )}
       </form>
     </FormProvider>
   )

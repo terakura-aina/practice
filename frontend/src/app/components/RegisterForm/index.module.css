@@ -13,3 +13,13 @@
 .signupTermsOfUse {
   margin-top: 12px;
 }
+
+.errorMessages {
+  padding: 0;
+}
+
+.errorMessage {
+  list-style: none;
+  color: rgb(237, 73, 86);
+  font-size: 14px;
+}
