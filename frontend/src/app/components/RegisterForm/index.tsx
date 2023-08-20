@@ -19,14 +19,25 @@ export function RegisterForm() {
   const onSubmit: SubmitHandler<Inputs> = (data) => console.log({ data })
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
   const [isInvalidValue, setIsInvalidValue] = useState<boolean>(true)
-  const [errorMessage, setErrorMessage] = useState<NewMessage[]>([])
+  const [errorMessages, setErrorMessages] = useState<NewMessage[]>([])
 
-  const handleErrorMessage = (newMessage: NewMessage) => {
-    // TODO: 一つの項目に対してエラーメッセージは1つだけ出るように修正する
-    if (newMessage.message) {
-      setErrorMessage((prevState) => [...prevState, newMessage])
-      console.log({ errorMessage })
-    }
+  const handleErrorMessage = (newError: NewMessage) => {
+    setErrorMessages(
+      (prevState) => buildErrorMessages(prevState, newError) as NewMessage[]
+    )
+  }
+
+  const buildErrorMessages = (
+    prevState: NewMessage[],
+    newError: NewMessage
+  ) => {
+    // prevState(以前から存在しているエラー)がなければそのままnewErrorを返す
+    if (prevState.length === 0) return [newError]
+    const newErrorMessages = prevState.filter((p) => p.type !== newError.type)
+    // newErrorのmessageがundefindの場合はその項目はエラーではなくなっているため、その項目を除いたエラーを返す
+    if (!newError.message) return newErrorMessages
+    // newErrorのmessageが存在する場合はその項目の前回のエラーを除いた結果に今回のエラーを追加して返す
+    return [...newErrorMessages, newError]
   }
 
   const handleClick = () => {
@@ -97,10 +108,12 @@ export function RegisterForm() {
           disabled={isEmptyValue || isInvalidValue}
           onClick={() => handleClick()}
         />
-        {errorMessage && (
+        {errorMessages && (
           <ul className={styles.errorMessages}>
-            {errorMessage.map((message) => (
-              <li className={styles.errorMessage}>{message.message}</li>
+            {errorMessages.map((message) => (
+              <li key={message.type} className={styles.errorMessage}>
+                {message.message}
+              </li>
             ))}
           </ul>
         )}
