@@ -37,12 +37,12 @@ export function Form({
     })
     const result = res.json()
     result
-      .then(function (data: any) {
+      .then((data: any) => {
         if (data.result === "failure") {
           setError(value, { message: data.message })
         }
       })
-      .then(function () {
+      .then(() => {
         setIsEmptyValue(
           Object.values(getValues()).filter((value) => value === "").length > 0
         )

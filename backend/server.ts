@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import express from "express"
 const cors = require("cors")
+const bodyParser = require("body-parser")
 
 const app: express.Express = express()
 const port = 8000
@@ -11,6 +12,9 @@ app.use(
     optionsSuccessStatus: 200,
   })
 )
+
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.json())
 
 const prisma = new PrismaClient()
 
@@ -70,6 +74,11 @@ app.get("/validate", async (req: express.Request, res: express.Response) => {
       result: "success",
     })
   }
+})
+
+app.post("/registar", (req: express.Request, res: express.Response) => {
+  console.log(req.body.email)
+  res.json({ result: "登録成功" })
 })
 
 app.listen(port, () => {
