@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client"
 import express from "express"
 const cors = require("cors")
 const bodyParser = require("body-parser")
+const bcrypt = require("bcrypt")
 
 const app: express.Express = express()
 const port = 8000
@@ -76,9 +77,20 @@ app.get("/validate", async (req: express.Request, res: express.Response) => {
   }
 })
 
-app.post("/registar", (req: express.Request, res: express.Response) => {
-  console.log(req.body.email)
-  res.json({ result: "登録成功" })
+app.post("/registar", async (req: express.Request, res: express.Response) => {
+  await prisma.user.create({
+    data: {
+      email: req.body.email,
+      fullName: req.body.fullName,
+      userName: req.body.userName,
+      password: bcrypt.hashSync(req.body.password, 10),
+    },
+  })
+  res.json({
+    email: req.body.email,
+    fullname: req.body.fullName,
+    username: req.body.userName,
+  })
 })
 
 app.listen(port, () => {
