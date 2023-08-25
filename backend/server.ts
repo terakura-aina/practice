@@ -3,6 +3,14 @@ import express from "express"
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
+import session from "express-session"
+
+declare module "express-session" {
+  interface SessionData {
+    userName: string
+    password: string
+  }
+}
 
 const app: express.Express = express()
 const port = 8000
@@ -16,6 +24,19 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
+
+app.use(
+  session({
+    secret: "secret",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+      maxAge: 1000 * 60 * 60, // 60分
+    },
+  })
+)
 
 const prisma = new PrismaClient()
 
@@ -78,18 +99,19 @@ app.get("/validate", async (req: express.Request, res: express.Response) => {
 })
 
 app.post("/registar", async (req: express.Request, res: express.Response) => {
+  const password = bcrypt.hashSync(req.body.password, 10)
   await prisma.user.create({
     data: {
       email: req.body.email,
       fullName: req.body.fullName,
       userName: req.body.userName,
-      password: bcrypt.hashSync(req.body.password, 10),
+      password: password,
     },
   })
+  req.session.userName = req.body.userName
+  req.session.password = password
   res.json({
-    email: req.body.email,
-    fullname: req.body.fullName,
-    username: req.body.userName,
+    result: "success",
   })
 })
 

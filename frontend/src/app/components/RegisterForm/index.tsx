@@ -6,6 +6,7 @@ import styles from "./index.module.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { schema } from "../../validations/schema"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 
 type Inputs = {}
 
@@ -15,6 +16,7 @@ type NewMessage = {
 }
 
 export function RegisterForm() {
+  const router = useRouter()
   const methods = useForm({ mode: "onChange", resolver: zodResolver(schema) })
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res: any = await fetch("http://localhost:8000/registar", {
@@ -27,7 +29,7 @@ export function RegisterForm() {
     })
     const result = res.json()
     result.then((data: any) => {
-      console.log({ data })
+      if (data.result === "success") router.push("/mypage")
     })
   }
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
