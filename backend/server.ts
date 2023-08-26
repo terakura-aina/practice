@@ -74,27 +74,35 @@ app.get("/api", (req: express.Request, res: express.Response) => {
 })
 
 app.get("/validate", async (req: express.Request, res: express.Response) => {
+  if (!req.query.value) return res.json({ result: "success" })
+  if (req.query.type !== "email" && req.query.type !== "userName")
+    return res.json({ result: "success" })
+  const alreadyExistsValue = []
+
+  // validation
   if (req.query.type === "email") {
-    if (!req.query.value) return res.json({ result: "success" })
     const alreadyExistsEmail = await prisma.user.findUnique({
       where: {
         email: req.query.value as string,
       },
     })
-    if (alreadyExistsEmail) {
-      res.json({
-        result: "failure",
-        message: "既に登録されています",
-      })
-    } else {
-      res.json({
-        result: "success",
-      })
-    }
-  } else {
-    res.json({
-      result: "success",
+    if (alreadyExistsEmail) alreadyExistsValue.push(alreadyExistsEmail)
+  } else if (req.query.type === "userName") {
+    const alreadyExistsUserName = await prisma.user.findUnique({
+      where: {
+        userName: req.query.value as string,
+      },
     })
+    if (alreadyExistsUserName) alreadyExistsValue.push(alreadyExistsUserName)
+  }
+
+  if (alreadyExistsValue.length !== 0) {
+    res.json({
+      result: "failure",
+      message: "既に登録されています",
+    })
+  } else {
+    res.json({ result: "success" })
   }
 })
 
