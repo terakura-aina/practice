@@ -1,0 +1,21 @@
+.main {
+  width: 348px;
+  margin: 0 auto;
+  color: rgb(115, 115, 115);
+}
+
+.login {
+  text-align: center;
+  border: 1px solid rgb(219, 219, 219);
+  border-radius: 1px;
+  padding: 0 40px 40px;
+}
+
+.loginTitle {
+  background-image: url(../../../public/logo.png);
+  width: 200px;
+  height: 70px;
+  background-size: 200px;
+  margin: 28px auto;
+  cursor: pointer;
+}

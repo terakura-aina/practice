@@ -117,10 +117,35 @@ app.post("/registar", async (req: express.Request, res: express.Response) => {
     },
   })
   req.session.userName = req.body.userName
-  req.session.password = password
   res.json({
     result: "success",
   })
+})
+
+app.post("/login", async (req: express.Request, res: express.Response) => {
+  const user = await prisma.user.findUnique({
+    where: {
+      email: req.body.email,
+    },
+  })
+  if (user === null) {
+    res.json({
+      result: "failure",
+    })
+    return
+  }
+
+  const compared = await bcrypt.compare(req.body.password, user.password)
+  if (compared) {
+    req.session.userName = req.body.userName
+    res.json({
+      result: "success",
+    })
+  } else {
+    res.json({
+      result: "failure",
+    })
+  }
 })
 
 app.listen(port, () => {

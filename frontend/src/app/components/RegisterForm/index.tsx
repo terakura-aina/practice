@@ -55,10 +55,6 @@ export function RegisterForm() {
     return [...newErrorMessages, newError]
   }
 
-  const handleClick = () => {
-    // TODO: 登録処理を書く
-  }
-
   return (
     <FormProvider {...methods}>
       <form className={styles.form} onSubmit={methods.handleSubmit(onSubmit)}>
@@ -121,7 +117,6 @@ export function RegisterForm() {
           label="登録する"
           type="submit"
           disabled={isEmptyValue || isInvalidValue}
-          onClick={() => handleClick()}
         />
         {errorMessages && (
           <ul className={styles.errorMessages}>

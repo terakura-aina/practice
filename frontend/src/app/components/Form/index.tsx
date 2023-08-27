@@ -7,8 +7,8 @@ type Props = {
   type: string
   value: string
   setIsEmptyValue: React.Dispatch<React.SetStateAction<boolean>>
-  setIsInvalidValue: React.Dispatch<React.SetStateAction<boolean>>
-  handleErrorMessage: (newMessage: object) => void
+  setIsInvalidValue?: React.Dispatch<React.SetStateAction<boolean>>
+  handleErrorMessage?: (newMessage: object) => void
 }
 
 export function Form({
@@ -30,25 +30,34 @@ export function Form({
   const [focus, setFocus] = useState<boolean>(false)
 
   const onBlur = async () => {
-    const params = { type: value, value: getValues(value) }
-    const query = new URLSearchParams(params)
-    const res: any = await fetch(`http://localhost:8000/validate?${query}`, {
-      cache: "no-store",
-    })
-    const result = res.json()
-    result
-      .then((data: any) => {
-        if (data.result === "failure") {
-          setError(value, { message: data.message })
-        }
+    if (!setIsInvalidValue) {
+      // login
+      setIsEmptyValue(
+        Object.values(getValues()).filter((value) => value === "").length > 0
+      )
+    } else {
+      // regstar
+      const params = { type: value, value: getValues(value) }
+      const query = new URLSearchParams(params)
+      const res: any = await fetch(`http://localhost:8000/validate?${query}`, {
+        cache: "no-store",
       })
-      .then(() => {
-        setIsEmptyValue(
-          Object.values(getValues()).filter((value) => value === "").length > 0
-        )
-        setIsInvalidValue(Object.keys(errors).length > 0)
-        errors[value] ? setNg(true) : setNg(false)
-      })
+      const result = res.json()
+      result
+        .then((data: any) => {
+          if (data.result === "failure") {
+            setError(value, { message: data.message })
+          }
+        })
+        .then(() => {
+          setIsEmptyValue(
+            Object.values(getValues()).filter((value) => value === "").length >
+              0
+          )
+          setIsInvalidValue(Object.keys(errors).length > 0)
+          errors[value] ? setNg(true) : setNg(false)
+        })
+    }
   }
 
   return (
@@ -65,6 +74,8 @@ export function Form({
           onBlur={() => {
             setFocus(false)
             onBlur()
+
+            if (!handleErrorMessage) return
             if (errors[value]) {
               handleErrorMessage({
                 type: value,
