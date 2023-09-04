@@ -14,6 +14,7 @@ export function LoginForm() {
   const methods = useForm({ mode: "onChange" })
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res: any = await fetch("http://localhost:8000/login", {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify(data),
       cache: "no-store",

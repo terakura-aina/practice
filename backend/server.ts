@@ -31,7 +31,7 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      httpOnly: true,
+      httpOnly: false,
       secure: false,
       maxAge: 1000 * 60 * 60, // 60分
     },
@@ -137,13 +137,37 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
 
   const compared = await bcrypt.compare(req.body.password, user.password)
   if (compared) {
-    req.session.userName = req.body.userName
+    req.session.userName = user.userName
     res.json({
       result: "success",
     })
   } else {
     res.json({
       result: "failure",
+    })
+  }
+})
+
+app.get("/profile", async (req: express.Request, res: express.Response) => {
+  if (req.session.userName) {
+    const user = await prisma.user.findUnique({
+      where: {
+        userName: req.session.userName,
+      },
+    })
+    if (!user) throw new Error("user does not exist")
+
+    res.json({
+      result: "session_exists",
+      user: {
+        email: user.email,
+        fullName: user.fullName,
+        userName: user.userName,
+      },
+    })
+  } else {
+    res.json({
+      result: "no_session",
     })
   }
 })
