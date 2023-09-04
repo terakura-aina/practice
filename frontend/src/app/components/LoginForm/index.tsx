@@ -26,7 +26,6 @@ export function LoginForm() {
     result.then((data: any) => {
       console.log({ data })
       if (data.result === "success") {
-        console.log("ここまで来てる")
         router.push("/mypage")
       } else {
         setErrorMessage("メールアドレスまたはパスワードが間違っています")
