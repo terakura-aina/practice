@@ -4,29 +4,36 @@ import { useEffect, useState } from "react"
 
 export default function Mypage() {
   const router = useRouter()
-  const [data, setData] = useState("")
+  const [data, setData] = useState({
+    email: "",
+    fullName: "",
+    userName: "",
+  })
   const fetchData = async () => {
     const res: any = await fetch(`http://localhost:8000/profile`, {
+      credentials: "include",
       cache: "no-store",
     })
     const result = await res.json()
     if (result.result === "no_session") {
       router.push("/login")
     } else if (result.result === "session_exists") {
-      setData(result)
+      setData(result.user)
     }
   }
 
   useEffect(() => {
     fetchData()
-  }, [data])
+  }, [])
 
   return (
     <>
-      {data && (
+      {data.email !== "" && (
         <div>
           <h1>mypage</h1>
-          {/* <div>email: {data.}</div> */}
+          <div>メールアドレス: {data.email}</div>
+          <div>ユーザーネーム: {data.userName}</div>
+          <div>フルネーム: {data.fullName}</div>
         </div>
       )}
     </>

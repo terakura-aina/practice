@@ -137,9 +137,7 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
 
   const compared = await bcrypt.compare(req.body.password, user.password)
   if (compared) {
-    console.log("user.userName", user.userName)
     req.session.userName = user.userName
-    console.log("req.session.userName", req.session.userName)
     res.json({
       result: "success",
     })
@@ -151,7 +149,6 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
 })
 
 app.get("/profile", async (req: express.Request, res: express.Response) => {
-  console.log("req.session.userName", req.session.userName)
   if (req.session.userName) {
     const user = await prisma.user.findUnique({
       where: {
