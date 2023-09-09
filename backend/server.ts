@@ -79,18 +79,22 @@ app.get("/validate", async (req: express.Request, res: express.Response) => {
     return res.json({ result: "success" })
   const alreadyExistsValue = []
 
+  if (typeof req.query.value !== "string") {
+    // req.query.value return type string | QueryString.ParsedQs | string[] | QueryString.ParsedQs[]
+    throw new Error("req.query.value is not string")
+  }
   // validation
   if (req.query.type === "email") {
     const alreadyExistsEmail = await prisma.user.findUnique({
       where: {
-        email: req.query.value as string,
+        email: req.query.value,
       },
     })
     if (alreadyExistsEmail) alreadyExistsValue.push(alreadyExistsEmail)
   } else if (req.query.type === "userName") {
     const alreadyExistsUserName = await prisma.user.findUnique({
       where: {
-        userName: req.query.value as string,
+        userName: req.query.value,
       },
     })
     if (alreadyExistsUserName) alreadyExistsValue.push(alreadyExistsUserName)
