@@ -20,6 +20,7 @@ export function RegisterForm() {
   const methods = useForm({ mode: "onChange", resolver: zodResolver(schema) })
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const res: any = await fetch("http://localhost:8000/registar", {
+      credentials: "include",
       method: "POST",
       body: JSON.stringify(data),
       cache: "no-store",
