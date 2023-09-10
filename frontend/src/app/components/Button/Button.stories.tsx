@@ -14,22 +14,16 @@ const meta: Meta<typeof Button> = {
 export default meta
 type Story = StoryObj<Props>
 
-export const Normal: Story = {
-  args: {
-    label: "button",
-  },
-}
+export const Normal: Story = {}
 
 export const WithLogo: Story = {
   args: {
-    label: "button",
     logo: <span className={styles.signupFacebookLogo} />,
   },
 }
 
 export const Disabled: Story = {
   args: {
-    label: "button",
     disabled: true,
   },
 }
