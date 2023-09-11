@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import styles from "./index.module.css"
 
-type Props = {
+export type Props = {
   logo?: ReactNode
   label: string
 } & JSX.IntrinsicElements["button"]
