@@ -9,11 +9,15 @@ import styles from "./index.module.css"
 
 type Inputs = {}
 
+type LoginResult = {
+  result: string
+}
+
 export function LoginForm() {
   const router = useRouter()
   const methods = useForm({ mode: "onChange" })
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const res: any = await fetch("http://localhost:8000/login", {
+    const res = await fetch("http://localhost:8000/login", {
       credentials: "include",
       method: "POST",
       body: JSON.stringify(data),
@@ -22,7 +26,7 @@ export function LoginForm() {
         "Content-Type": "application/json",
       },
     })
-    const result = await res.json()
+    const result = (await res.json()) as LoginResult
     if (result.result === "success") {
       router.push("/mypage")
     } else {

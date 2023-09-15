@@ -2,6 +2,17 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Props } from "./mypage"
 
+type ProfileResult = {
+  result: string
+  user: User
+}
+
+type User = {
+  email: string
+  fullName: string
+  userName: string
+}
+
 export function useMypage(): Props {
   const router = useRouter()
   const [data, setData] = useState({
@@ -10,11 +21,11 @@ export function useMypage(): Props {
     userName: "",
   })
   const fetchData = async () => {
-    const res: any = await fetch(`http://localhost:8000/profile`, {
+    const res = await fetch(`http://localhost:8000/profile`, {
       credentials: "include",
       cache: "no-store",
     })
-    const result = await res.json()
+    const result = (await res.json()) as ProfileResult
     if (result.result === "no_session") {
       router.push("/login")
     } else if (result.result === "session_exists") {
