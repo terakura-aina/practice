@@ -28,10 +28,8 @@ export function RegisterForm() {
         "Content-Type": "application/json",
       },
     })
-    const result = res.json()
-    result.then((data: any) => {
-      if (data.result === "success") router.push("/mypage")
-    })
+    const result = await res.json()
+    if (result.result === "success") router.push("/mypage")
   }
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
   const [isInvalidValue, setIsInvalidValue] = useState<boolean>(true)

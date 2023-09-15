@@ -42,21 +42,15 @@ export function Form({
       const res: any = await fetch(`http://localhost:8000/validate?${query}`, {
         cache: "no-store",
       })
-      const result = res.json()
-      result
-        .then((data: any) => {
-          if (data.result === "failure") {
-            setError(value, { message: data.message })
-          }
-        })
-        .then(() => {
-          setIsEmptyValue(
-            Object.values(getValues()).filter((value) => value === "").length >
-              0
-          )
-          setIsInvalidValue(Object.keys(errors).length > 0)
-          errors[value] ? setNg(true) : setNg(false)
-        })
+      const result = await res.json()
+      if (result.result === "failure") {
+        setError(value, { message: result.message })
+      }
+      setIsEmptyValue(
+        Object.values(getValues()).filter((value) => value === "").length > 0
+      )
+      setIsInvalidValue(Object.keys(errors).length > 0)
+      errors[value] ? setNg(true) : setNg(false)
     }
   }
 

@@ -22,15 +22,12 @@ export function LoginForm() {
         "Content-Type": "application/json",
       },
     })
-    const result = res.json()
-    result.then((data: any) => {
-      console.log({ data })
-      if (data.result === "success") {
-        router.push("/mypage")
-      } else {
-        setErrorMessage("メールアドレスまたはパスワードが間違っています")
-      }
-    })
+    const result = await res.json()
+    if (result.result === "success") {
+      router.push("/mypage")
+    } else {
+      setErrorMessage("メールアドレスまたはパスワードが間違っています")
+    }
   }
 
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
