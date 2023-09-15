@@ -11,6 +11,11 @@ type Props = {
   handleErrorMessage?: (newMessage: object) => void
 }
 
+type ValidateResult = {
+  result: string
+  message?: string
+}
+
 export function Form({
   label,
   type,
@@ -39,10 +44,10 @@ export function Form({
       // regstar
       const params = { type: value, value: getValues(value) }
       const query = new URLSearchParams(params)
-      const res: any = await fetch(`http://localhost:8000/validate?${query}`, {
+      const res = await fetch(`http://localhost:8000/validate?${query}`, {
         cache: "no-store",
       })
-      const result = await res.json()
+      const result = (await res.json()) as ValidateResult
       if (result.result === "failure") {
         setError(value, { message: result.message })
       }

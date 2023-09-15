@@ -15,11 +15,15 @@ type NewMessage = {
   message?: string
 }
 
+type RegisterResult = {
+  result: string
+}
+
 export function RegisterForm() {
   const router = useRouter()
   const methods = useForm({ mode: "onChange", resolver: zodResolver(schema) })
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const res: any = await fetch("http://localhost:8000/registar", {
+    const res = await fetch("http://localhost:8000/registar", {
       credentials: "include",
       method: "POST",
       body: JSON.stringify(data),
@@ -28,7 +32,7 @@ export function RegisterForm() {
         "Content-Type": "application/json",
       },
     })
-    const result = await res.json()
+    const result = (await res.json()) as RegisterResult
     if (result.result === "success") router.push("/mypage")
   }
   const [isEmptyValue, setIsEmptyValue] = useState<boolean>(true)
