@@ -1,9 +1,9 @@
-import { PrismaClient } from "@prisma/client"
 import express from "express"
 const cors = require("cors")
 const bodyParser = require("body-parser")
 const bcrypt = require("bcrypt")
 import session from "express-session"
+import { prisma } from "./client"
 
 declare module "express-session" {
   interface SessionData {
@@ -37,8 +37,6 @@ app.use(
   })
 )
 
-const prisma = new PrismaClient()
-
 app.get("/", (req: express.Request, res: express.Response) => {
   res.send("Hello, world!")
 })
@@ -54,14 +52,12 @@ app.get("/validate", async (req: express.Request, res: express.Response) => {
     throw new Error("req.query.value is not string")
   }
   // validation
-  console.log(req.query.type)
   if (req.query.type === "email") {
     const alreadyExistsEmail = await prisma.user.findUnique({
       where: {
         email: req.query.value,
       },
     })
-    console.log({ alreadyExistsEmail })
     if (alreadyExistsEmail) alreadyExistsValue.push(alreadyExistsEmail)
   } else if (req.query.type === "userName") {
     const alreadyExistsUserName = await prisma.user.findUnique({

@@ -6,7 +6,9 @@
   "type": "commonjs",
   "scripts": {
     "start": "nodemon server.ts",
-    "test": "jest"
+    "test": "dotenv -e .env.test jest",
+    "migrate:test": "dotenv -e .env.test -- npx prisma migrate dev",
+    "migrate:test:reset": "dotenv -e .env.test -- npx prisma migrate reset"
   },
   "keywords": [],
   "author": "",
