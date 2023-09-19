@@ -15,7 +15,7 @@ declare module "express-session" {
 export const app: express.Express = express()
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: "*",
     credentials: true, //レスポンスヘッダーにAccess-Control-Allow-Credentials追加
     optionsSuccessStatus: 200,
   })

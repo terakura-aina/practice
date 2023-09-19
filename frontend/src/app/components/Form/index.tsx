@@ -61,8 +61,10 @@ export function Form({
 
   return (
     <div className={styles.formGroup}>
-      <label className={styles.formLabel}>
+      <label className={styles.formLabel} htmlFor={label}>
         <input
+          id={label}
+          autoComplete="off"
           className={styles.formInput}
           type={type}
           placeholder=" "
