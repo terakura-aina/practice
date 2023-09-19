@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from "@storybook/react"
 import { RegisterForm } from "."
-import { within, userEvent, waitFor } from "@storybook/testing-library"
+import { within, userEvent } from "@storybook/testing-library"
 
 const meta: Meta<typeof RegisterForm> = {
   component: RegisterForm,
