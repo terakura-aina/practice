@@ -13,6 +13,10 @@ type User = {
   userName: string
 }
 
+export type Result = {
+  result: string
+}
+
 export function useMypage(): Props {
   const router = useRouter()
   const [data, setData] = useState({
@@ -33,6 +37,14 @@ export function useMypage(): Props {
     }
   }
 
+  const logout = async () => {
+    const res = await fetch("http://localhost:8000/logout", {
+      credentials: "include",
+      cache: "no-store",
+    })
+    return (await res.json()) as unknown as Result
+  }
+
   useEffect(() => {
     fetchData()
   }, [])
@@ -41,5 +53,6 @@ export function useMypage(): Props {
     email: data.email,
     userName: data.userName,
     fullName: data.fullName,
+    logout,
   }
 }

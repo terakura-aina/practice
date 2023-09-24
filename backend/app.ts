@@ -120,6 +120,13 @@ app.post("/login", async (req: express.Request, res: express.Response) => {
   }
 })
 
+app.get("/logout", async (req: express.Request, res: express.Response) => {
+  req.session.destroy(() => {})
+  res.json({
+    result: "success",
+  })
+})
+
 app.get("/profile", async (req: express.Request, res: express.Response) => {
   if (req.session.userName) {
     const user = await prisma.user.findUnique({
