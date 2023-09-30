@@ -150,3 +150,32 @@ app.get("/profile", async (req: express.Request, res: express.Response) => {
     })
   }
 })
+
+app.post("/update", async (req: express.Request, res: express.Response) => {
+  if (req.session.userName) {
+    console.log("req.session.userName")
+    const user = await prisma.user.findUnique({
+      where: {
+        userName: req.session.userName,
+      },
+    })
+    if (!user) throw new Error("user does not exist")
+
+    await prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        email: req.body.email,
+      },
+    })
+
+    res.json({
+      result: "update_success",
+    })
+  } else {
+    res.json({
+      result: "update_failure",
+    })
+  }
+})

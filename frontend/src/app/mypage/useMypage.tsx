@@ -7,7 +7,7 @@ type ProfileResult = {
   user: User
 }
 
-type User = {
+export type User = {
   email: string
   fullName: string
   userName: string
@@ -24,6 +24,7 @@ export function useMypage(): Props {
     fullName: "",
     userName: "",
   })
+  const [isEditing, setIsEditing] = useState(false)
   const fetchData = async () => {
     const res = await fetch(`http://localhost:8000/profile`, {
       credentials: "include",
@@ -45,14 +46,38 @@ export function useMypage(): Props {
     return (await res.json()) as unknown as Result
   }
 
+  const handleDoubleClick = () => {
+    setIsEditing(true)
+  }
+
+  const updateUserData = async (data: { email: string }) => {
+    const res = await fetch("http://localhost:8000/update", {
+      credentials: "include",
+      method: "POST",
+      body: JSON.stringify(data),
+      cache: "no-store",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    const result = await res.json()
+    if (result.result === "update_success") {
+      setIsEditing(false)
+    }
+  }
+
   useEffect(() => {
     fetchData()
   }, [])
 
   return {
-    email: data.email,
-    userName: data.userName,
-    fullName: data.fullName,
+    data,
+    setData,
+    handleDoubleClick,
+    isEditing,
     logout,
+    updateUserData: (userData) => {
+      updateUserData(userData)
+    },
   }
 }
