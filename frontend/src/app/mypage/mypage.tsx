@@ -25,21 +25,24 @@ export function Presentation({
         <div>
           <h1>mypage</h1>
           {isEditing ? (
-            <input
-              type="text"
-              value={data.email}
-              onChange={(e) =>
-                setData({
-                  ...data,
-                  email: e.target.value,
-                })
-              }
-              onKeyPress={(e) => {
-                if (e.key == "Enter") {
-                  updateUserData({ email: data.email })
+            <label>
+              メールアドレス：
+              <input
+                type="text"
+                value={data.email}
+                onChange={(e) =>
+                  setData({
+                    ...data,
+                    email: e.target.value,
+                  })
                 }
-              }}
-            />
+                onKeyPress={(e) => {
+                  if (e.key == "Enter") {
+                    updateUserData({ email: data.email })
+                  }
+                }}
+              />
+            </label>
           ) : (
             <div onDoubleClick={handleDoubleClick}>
               メールアドレス: {data.email}
