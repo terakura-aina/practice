@@ -153,7 +153,6 @@ app.get("/profile", async (req: express.Request, res: express.Response) => {
 
 app.post("/update", async (req: express.Request, res: express.Response) => {
   if (req.session.userName) {
-    console.log("req.session.userName")
     const user = await prisma.user.findUnique({
       where: {
         userName: req.session.userName,
